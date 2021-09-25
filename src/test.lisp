@@ -693,10 +693,15 @@
       (decf (p-money team) cost)
       (incf cost (floor (* cost 1.2))))))
 
+(defun enemy-inc-money ()
+  (with-slots (towers money) *enemy*
+    (let ((tower-num (1+ (length towers))))
+      (incf money (+ (floor 30 tower-num) 10)))))
+
 (defun update-money ()
   (when (>= (game-frame *game*) 60)
     (incf (p-money *player*))
-    (incf (p-money *enemy*) 10)
+    (enemy-inc-money)
     (setf (game-frame *game*) 0)))
 
 
