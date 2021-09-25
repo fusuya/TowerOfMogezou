@@ -341,6 +341,7 @@
   (with-slots (posx posy w h color) bullet
     (let* ((pen (create-pen :null color 1))
 	   (c (create-solid-brush color)))
+      (select-object hdc c)
       (rectangle hdc posx posy (+ posx w) (+ posy h))
       ;;(select-object hdc hold-brush)
      ;; (select-object hdc hold-pen)
