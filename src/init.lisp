@@ -1,53 +1,7 @@
 (in-package :caske2021au)
 
-(defun init-game  ()
-  (setf *game* (make-game :state :playing :stage 0 :all-stage (copy-tree *stage-data-list*))
-	*player* (make-player :money 500)
-	*enemy* (make-enemy :money 600 :act-cd 180 :act-c 0))
-  (create-stage-data (car (game-all-stage *game*))))
 
 
-(defun init-mouse ()
-  (setf *mouse* (make-mouse)))
-
-(defun init-mouse-state ()
-  (with-slots (left right) *mouse*
-    (setf left nil right nil)))
-
-
-(defun init-samples ()
-  (let ((posx (+ *field-w* 5))
-	(x-interval (+ *tower-w* 5))
-	(y (+ *player-field-h-min* 20))
-	(y2 (+ *player-field-h-min* 45)))
-    (setf *tower-samples* (list (make-canon :posx posx :posy y :hp 3 :dmg 1 :lv 1 :point 30
-					    :cd 160 :blt-spd 2 :cost 100 :atk-c 150
-					    :w 32 :h 16 :w/2 16 :h/2 8 :img +canon+)
-				(make-beam :posx (+ posx x-interval) :posy y :point 40
-					   :hp 3 :dmg 1 :cd 120 :atk-c 110 :blt-spd 2
-					   :penetrate 2 :lv 1 :cost 150
-					   :w 32 :h 16 :w/2 16 :h/2 8 :img +beam+)
-				(make-missile :posx (+ posx (* x-interval 2)) :posy y
-					      :lv 1 :hp 5 :dmg 2 :blt-spd 1 :point 50
-					      :explosion-r 32 :cd 220 :atk-c 210 :cost 250
-					      :w 32 :h 16 :w/2 16 :h/2 8 :img +missile+)
-				(make-factory :posx (+ posx (* x-interval 3)) :posy y
-					      :cd 260 :inc-money 10 :point 30
-					      :lv 1 :hp 5 :cost 250
-					      :w 32 :h 16 :w/2 16 :h/2 8 :img +factory+)
-				(make-wall :posx (+ posx (* x-interval 4)) :posy y
-					   :lv 1 :hp 5 :cost 50
-					   :w 32 :h 16 :w/2 16 :h/2 8 :img +wall+)
-				(make-guided :posx posx :posy y2
-					      :lv 1 :hp 5 :dmg 2 :blt-spd 3 :point 50
-					      :explosion-r 32 :cd 220 :atk-c 210 :cost 600
-					     :w 32 :h 16 :w/2 16 :h/2 8 :img +guided+)
-				(make-ice :posx (+ posx x-interval) :posy y2 :hp 3 :dmg 0 :lv 1 :point 30
-					    :cd 180 :blt-spd 2 :cost 140 :atk-c 160 :stop-time 120
-					    :w 32 :h 16 :w/2 16 :h/2 8 :img +ice+)))))
-
-
-    
 
 (defun create-monster (monster)
   (with-slots (hp point spd img lv) monster
@@ -100,6 +54,56 @@
 				 :startx (getf data :startx)
 				 :starty (getf data :starty)))
     (create-monsters)))
+
+
+(defun init-game  ()
+  (setf *game* (make-game :state :playing :stage 0 :all-stage (copy-tree *stage-data-list*))
+	*player* (make-player :money 500)
+	*enemy* (make-enemy :money 600 :act-cd 180 :act-c 0))
+  (create-stage-data (car (game-all-stage *game*))))
+
+
+(defun init-mouse ()
+  (setf *mouse* (make-mouse)))
+
+(defun init-mouse-state ()
+  (with-slots (left right) *mouse*
+    (setf left nil right nil)))
+
+
+(defun init-samples ()
+  (let ((posx (+ *field-w* 5))
+	(x-interval (+ *tower-w* 5))
+	(y (+ *player-field-h-min* 20))
+	(y2 (+ *player-field-h-min* 45)))
+    (setf *tower-samples* (list (make-canon :posx posx :posy y :hp 3 :dmg 1 :lv 1 :point 30
+					    :cd 160 :blt-spd 2 :cost 100 :atk-c 150
+					    :w 32 :h 16 :w/2 16 :h/2 8 :img +canon+)
+				(make-beam :posx (+ posx x-interval) :posy y :point 40
+					   :hp 3 :dmg 1 :cd 120 :atk-c 110 :blt-spd 2
+					   :penetrate 2 :lv 1 :cost 150
+					   :w 32 :h 16 :w/2 16 :h/2 8 :img +beam+)
+				(make-missile :posx (+ posx (* x-interval 2)) :posy y
+					      :lv 1 :hp 5 :dmg 2 :blt-spd 1 :point 50
+					      :explosion-r 32 :cd 220 :atk-c 210 :cost 250
+					      :w 32 :h 16 :w/2 16 :h/2 8 :img +missile+)
+				(make-factory :posx (+ posx (* x-interval 3)) :posy y
+					      :cd 260 :inc-money 10 :point 30
+					      :lv 1 :hp 5 :cost 250
+					      :w 32 :h 16 :w/2 16 :h/2 8 :img +factory+)
+				(make-wall :posx (+ posx (* x-interval 4)) :posy y
+					   :lv 1 :hp 5 :cost 50
+					   :w 32 :h 16 :w/2 16 :h/2 8 :img +wall+)
+				(make-guided :posx posx :posy y2
+					      :lv 1 :hp 5 :dmg 2 :blt-spd 3 :point 50
+					      :explosion-r 32 :cd 220 :atk-c 210 :cost 600
+					     :w 32 :h 16 :w/2 16 :h/2 8 :img +guided+)
+				(make-ice :posx (+ posx x-interval) :posy y2 :hp 3 :dmg 0 :lv 1 :point 30
+					    :cd 180 :blt-spd 2 :cost 140 :atk-c 160 :stop-time 120
+					    :w 32 :h 16 :w/2 16 :h/2 8 :img +ice+)))))
+
+
+    
 
 
 ;;クライアント領域を*client-w* *client-h*に設定
